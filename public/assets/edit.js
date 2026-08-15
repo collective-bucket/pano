@@ -10,6 +10,7 @@
   var qrPanel = document.querySelector("#qr-panel");
   var linksList = document.querySelector("#links-list");
   var adIdInput = document.querySelector("#ad-id");
+  var deleteButton = document.querySelector("#delete-ad");
   var editingId = null;
   var session = null;
 
@@ -105,6 +106,7 @@
     var params = new URLSearchParams(window.location.search);
     editingId = params.get("id");
     adIdInput.value = editingId || "";
+    deleteButton.hidden = !editingId;
 
     if (editingId) {
       try {
@@ -148,9 +150,23 @@
       editingId = saved.id;
       adIdInput.value = saved.id;
       history.replaceState({}, "", "/edit?id=" + encodeURIComponent(saved.id));
+      deleteButton.hidden = false;
       showMessage("Kaydedildi. QR kodu hazırlanıyor…", "success");
       await renderQr(saved.id);
       showMessage("Kaydedildi. QR kodu hazır.", "success");
+    } catch (error) {
+      showMessage(error.message, "error");
+    }
+  });
+
+  deleteButton.addEventListener("click", async function () {
+    if (!editingId) return;
+    if (!window.confirm("Bu ilanı kaldırmak istiyor musun?")) return;
+    showMessage("İlan kaldırılıyor…");
+    try {
+      session = await window.PanoAds.requireSession();
+      await window.PanoAds.removeAd(editingId, session);
+      window.location.assign("/mine");
     } catch (error) {
       showMessage(error.message, "error");
     }

@@ -123,7 +123,15 @@ a:hover { color: var(--accent-strong); }
 .btn-primary:hover { background: var(--accent-strong); color: #fff; }
 .btn-ghost { background: transparent; border-color: var(--border); color: var(--text); }
 .btn-ghost:hover { background: var(--accent-soft); border-color: var(--accent); color: var(--text); }
-.btn.danger { color: var(--danger); }
+.btn.danger {
+  color: var(--danger);
+  border-color: #efc4c4;
+}
+.btn.danger:hover {
+  background: var(--danger-soft);
+  border-color: var(--danger);
+  color: var(--danger);
+}
 
 main { flex: 1; padding: 40px 0 56px; }
 
@@ -255,28 +263,6 @@ main { flex: 1; padding: 40px 0 56px; }
   color: #244d42;
   font-weight: 600;
   font-size: 14px;
-}
-
-.ad-shell.has-qr {
-  padding-bottom: 88px;
-}
-
-.postit-qr {
-  position: absolute;
-  left: 26px;
-  bottom: 22px;
-  width: 50px;
-  height: 50px;
-  display: block;
-  background: var(--note-bg);
-}
-
-.postit-qr img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  image-rendering: pixelated;
-  mix-blend-mode: multiply;
 }
 
 #ad-view .ad-shell {
@@ -441,76 +427,6 @@ textarea { min-height: 120px; resize: vertical; }
 .mine-item.is-draft .ad-card-link {
   opacity: 0.42;
   filter: grayscale(0.25);
-}
-
-.postit-menu {
-  position: absolute;
-  top: 10px;
-  right: 12px;
-  z-index: 5;
-}
-
-.postit-menu summary {
-  width: 40px;
-  height: 36px;
-  display: grid;
-  place-items: center;
-  border-radius: 8px;
-  color: #454844;
-  cursor: pointer;
-  font-weight: 800;
-  letter-spacing: 1px;
-  list-style: none;
-}
-
-.postit-menu summary::-webkit-details-marker {
-  display: none;
-}
-
-.postit-menu summary:hover,
-.postit-menu[open] summary {
-  background: rgba(255, 255, 255, 0.55);
-}
-
-.postit-menu-panel {
-  position: absolute;
-  top: 40px;
-  right: 0;
-  width: 190px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: #fff;
-  box-shadow: 0 14px 32px -12px rgba(25, 28, 26, 0.35);
-}
-
-.postit-menu-panel a,
-.postit-menu-panel button {
-  width: 100%;
-  min-height: 40px;
-  display: flex;
-  align-items: center;
-  border: 0;
-  border-bottom: 1px solid var(--border);
-  padding: 9px 12px;
-  background: #fff;
-  color: var(--text);
-  font: 500 13px var(--font);
-  text-align: left;
-  cursor: pointer;
-}
-
-.postit-menu-panel > :last-child {
-  border-bottom: 0;
-}
-
-.postit-menu-panel a:hover,
-.postit-menu-panel button:hover {
-  background: var(--accent-soft);
-}
-
-.postit-menu-panel .danger {
-  color: var(--danger);
 }
 
 .empty { color: var(--muted); }
