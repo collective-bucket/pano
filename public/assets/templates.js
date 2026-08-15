@@ -100,7 +100,7 @@
       compact && ad.id && window.PanoAds ? window.PanoAds.publicUrl(ad.id) : "";
 
     var inner =
-      '<div class="ad-shell postit postit-' +
+      '<div class="ad-shadow"><div class="ad-shell postit postit-' +
       noteColor +
       (qrUrl ? " has-qr" : "") +
       '">' +
@@ -118,7 +118,7 @@
       (qrUrl
         ? '<span class="postit-qr" data-qr-url="' + escapeHtml(qrUrl) + '"></span>'
         : "") +
-      "</div>";
+      "</div></div>";
 
     if (href) {
       return (

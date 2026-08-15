@@ -35,14 +35,13 @@
         .map(function (ad) {
           var id = window.PanoTemplates.escapeHtml(ad.id);
           return (
-            '<article class="mine-item">' +
+            '<article class="mine-item' +
+            (ad.published ? "" : " is-draft") +
+            '">' +
             window.PanoTemplates.renderAd(ad, {
               compact: true,
               href: "/i/" + encodeURIComponent(ad.id)
             }) +
-            '<span class="badge postit-status">' +
-            (ad.published ? "yayında" : "taslak") +
-            "</span>" +
             '<details class="postit-menu">' +
             '<summary aria-label="İlan aksiyonları">•••</summary>' +
             '<div class="postit-menu-panel">' +

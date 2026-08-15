@@ -18,6 +18,9 @@
         <img src="/assets/logo.svg" alt="" />
         <span>Pano</span>
       </a>
+      <button class="nav-toggle" type="button" aria-label="Menüyü aç" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
       <div class="nav-cta">
         <a class="btn btn-ghost" href="/mine">İlanlarım</a>
         <div class="cb-auth-controls" data-cb-auth></div>
@@ -87,18 +90,20 @@
           <p id="edit-message" class="message" role="status"></p>
         </form>
 
-        <aside class="panel">
-          <h2>Önizleme</h2>
-          <div id="preview"></div>
-          <div id="qr-panel" hidden>
+        <div class="preview-column">
+          <aside class="panel">
+            <h2>Önizleme</h2>
+            <div id="preview"></div>
+          </aside>
+          <aside id="qr-panel" class="panel qr-panel" hidden>
             <h2>QR kod</h2>
             <img id="qr-image" alt="İlanın QR kodu" />
             <a id="qr-public-url" class="qr-public-url" target="_blank" rel="noopener"></a>
             <div class="actions" style="justify-content:center;">
               <a id="qr-download" class="btn btn-primary" href="#">QR görselini indir</a>
             </div>
-          </div>
-        </aside>
+          </aside>
+        </div>
       </div>
     </div>
   </main>
@@ -116,6 +121,7 @@
   <script src="/assets/firestore.js" defer></script>
   <script src="/assets/ads.js" defer></script>
   <script src="/assets/templates.js" defer></script>
+  <script src="/assets/nav.js" defer></script>
   <script src="/assets/edit.js" defer></script>
 </body>
 </html>
