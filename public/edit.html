@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>İlan düzenle | Pano</title>
+  <meta name="description" content="Pano ilanı oluştur veya düzenle." />
+  <link rel="icon" type="image/svg+xml" href="/assets/logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap">
+      <a class="brand" href="/">
+        <img src="/assets/logo.svg" alt="" />
+        <span>Pano</span>
+      </a>
+      <div class="nav-cta">
+        <a class="btn btn-ghost" href="/mine">İlanlarım</a>
+        <div class="cb-auth-controls" data-cb-auth></div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <section class="hero">
+        <div>
+          <h1>İlan düzenle</h1>
+          <p>Şablon seç, metni ve linkleri ayarla, kaydettikten sonra QR kodunu indir.</p>
+        </div>
+      </section>
+
+      <div class="edit-layout">
+        <form id="edit-form" class="panel">
+          <h2>İçerik</h2>
+          <input id="ad-id" type="hidden" />
+
+          <label for="title">Başlık</label>
+          <input id="title" name="title" type="text" maxlength="120" required />
+
+          <label for="body">Açıklama</label>
+          <textarea id="body" name="body" maxlength="2000"></textarea>
+
+          <div class="row-2">
+            <div>
+              <label for="emoji">Emoji</label>
+              <input id="emoji" name="emoji" type="text" maxlength="8" placeholder="📌" />
+            </div>
+            <div>
+              <label for="accent">Vurgu rengi</label>
+              <input id="accent" name="accent" type="color" value="#2f9a7c" />
+            </div>
+          </div>
+
+          <label for="template">Şablon</label>
+          <select id="template" name="template">
+            <option value="card">Kart</option>
+            <option value="poster">Poster</option>
+            <option value="minimal">Minimal</option>
+          </select>
+
+          <label>Linkler</label>
+          <div id="links-list"></div>
+          <button id="add-link" class="btn btn-ghost" type="button">Link ekle</button>
+
+          <label class="check">
+            <input id="published" name="published" type="checkbox" checked />
+            Yayında göster
+          </label>
+
+          <div class="actions">
+            <button class="btn btn-primary" type="submit">Kaydet</button>
+            <a class="btn btn-ghost" href="/mine">İlanlarım</a>
+          </div>
+          <p id="edit-message" class="message" role="status"></p>
+        </form>
+
+        <aside class="panel">
+          <h2>Önizleme</h2>
+          <div id="preview"></div>
+          <div id="qr-panel" hidden>
+            <h2>QR kod</h2>
+            <canvas id="qr-canvas" width="280" height="280"></canvas>
+            <div class="actions" style="justify-content:center;">
+              <a id="qr-download" class="btn btn-primary" href="#">QR indir</a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>Collective Bucket · Pano</span>
+      <a href="https://auth.collectivebucket.com">Giriş</a>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+  <script src="/assets/config.js"></script>
+  <script src="/assets/firestore.js"></script>
+  <script src="/assets/ads.js"></script>
+  <script src="/assets/templates.js"></script>
+  <script src="/assets/edit.js"></script>
+  <script src="https://auth.collectivebucket.com/client.js" defer></script>
+</body>
+</html>

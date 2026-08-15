@@ -1,0 +1,14 @@
+{
+  "name": "collective-bucket-pano",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Collective Bucket — QR ile paylaşılabilir ilan panosu.",
+  "scripts": {
+    "serve": "firebase emulators:start --only hosting",
+    "deploy": "firebase deploy --only hosting:pano,firestore:rules",
+    "check": "node --check public/assets/firestore.js && node --check public/assets/ads.js && node --check public/assets/templates.js && node --check public/assets/home.js && node --check public/assets/view.js && node --check public/assets/edit.js && node --check public/assets/mine.js"
+  },
+  "devDependencies": {
+    "firebase-tools": "^15.27.0"
+  }
+}

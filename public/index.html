@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pano | Collective Bucket</title>
+  <meta name="description" content="QR ile paylaşılabilir ilan panosu. İlanları görüntüle, oluştur ve indir." />
+  <link rel="icon" type="image/svg+xml" href="/assets/logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap">
+      <a class="brand" href="/">
+        <img src="/assets/logo.svg" alt="" />
+        <span>Pano</span>
+      </a>
+      <div class="nav-cta">
+        <a class="btn btn-ghost" href="/mine">İlanlarım</a>
+        <a class="btn btn-primary" id="new-ad" href="/edit">Yeni ilan</a>
+        <div class="cb-auth-controls" data-cb-auth></div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <section class="hero">
+        <div>
+          <h1>Pano</h1>
+          <p>
+            İlan hazırla, şablonunu seç, link ekle ve QR kod üret.
+            Yayınlanan tüm ilanlar burada herkese açık listelenir.
+          </p>
+        </div>
+        <div class="meta" id="home-status"></div>
+      </section>
+      <div id="ad-list" class="ad-grid"></div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>Collective Bucket</span>
+      <a href="https://collectivebucket.com">collectivebucket.com</a>
+    </div>
+  </footer>
+
+  <script src="/assets/config.js"></script>
+  <script src="/assets/firestore.js"></script>
+  <script src="/assets/ads.js"></script>
+  <script src="/assets/templates.js"></script>
+  <script src="/assets/home.js"></script>
+  <script src="https://auth.collectivebucket.com/client.js" defer></script>
+</body>
+</html>
