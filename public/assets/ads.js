@@ -69,11 +69,24 @@
     return payload;
   }
 
-  async function requireSession() {
-    if (!window.CollectiveBucketAuth) {
-      throw new Error("Oturum servisi yüklenemedi.");
+  // client.js defer ile yüklendiği için sayfa scriptleri ondan önce
+  // çalışabilir; oturum köprüsü hazır olana kadar bekle.
+  async function waitForAuth() {
+    var deadline = Date.now() + 10000;
+    while (!window.CollectiveBucketAuth) {
+      if (Date.now() > deadline) {
+        throw new Error("Oturum servisi yüklenemedi.");
+      }
+      await new Promise(function (resolve) {
+        setTimeout(resolve, 50);
+      });
     }
-    var session = await window.CollectiveBucketAuth.getSession({
+    return window.CollectiveBucketAuth;
+  }
+
+  async function requireSession() {
+    var client = await waitForAuth();
+    var session = await client.getSession({
       forceRefresh: true
     });
     if (!session || !session.idToken) {
@@ -160,6 +173,7 @@
   window.PanoAds = {
     TEMPLATES: TEMPLATES,
     DEFAULT_ACCENT: DEFAULT_ACCENT,
+    waitForAuth: waitForAuth,
     requireSession: requireSession,
     listPublished: listPublished,
     listMine: listMine,

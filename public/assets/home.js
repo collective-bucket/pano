@@ -41,15 +41,5 @@
     }
   }
 
-  document.querySelector("#new-ad")?.addEventListener("click", async function (event) {
-    event.preventDefault();
-    try {
-      await window.PanoAds.requireSession();
-      window.location.assign("/edit");
-    } catch {
-      /* redirect handled */
-    }
-  });
-
   load();
 })();

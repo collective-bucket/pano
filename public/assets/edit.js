@@ -99,7 +99,8 @@
   async function boot() {
     try {
       session = await window.PanoAds.requireSession();
-    } catch {
+    } catch (error) {
+      showMessage(error.message, "error");
       return;
     }
 

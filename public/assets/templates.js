@@ -10,17 +10,24 @@
       .replace(/'/g, "&#39;");
   }
 
-  function renderLinks(links) {
+  // Kart bir <a> içine sarıldığında linkler <a> olarak render edilemez;
+  // iç içe anchor geçersiz HTML olduğu için tarayıcı kartı bölüp bozuk
+  // kutular çiziyor. Bu durumda linkler tıklanmayan etiket olarak gösterilir.
+  function renderLinks(links, asText) {
     if (!links || !links.length) return "";
     return (
       '<ul class="ad-links">' +
       links
         .map(function (link) {
+          var label = escapeHtml(link.label || link.url);
+          if (asText) {
+            return '<li><span class="ad-link-chip">' + label + "</span></li>";
+          }
           return (
-            '<li><a href="' +
+            '<li><a class="ad-link-chip" href="' +
             escapeHtml(link.url) +
             '" target="_blank" rel="noopener">' +
-            escapeHtml(link.label || link.url) +
+            label +
             "</a></li>"
           );
         })
@@ -57,7 +64,7 @@
       (ad.body
         ? '<p class="ad-body">' + escapeHtml(ad.body) + "</p>"
         : "") +
-      renderLinks(ad.links) +
+      renderLinks(ad.links, Boolean(href)) +
       "</div>";
 
     if (href) {

@@ -159,12 +159,21 @@ main { flex: 1; padding: 40px 0 56px; }
 .ad-emoji { font-size: 28px; margin-bottom: 10px; }
 .ad-title { margin: 0 0 10px; letter-spacing: -0.02em; }
 .ad-body { margin: 0 0 14px; color: var(--muted); white-space: pre-wrap; }
-.ad-links { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
-.ad-links a {
-  display: inline-flex;
+.ad-links {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.ad-link-chip {
+  display: inline-block;
   padding: 8px 12px;
   border-radius: 8px;
-  background: color-mix(in srgb, var(--ad-accent, var(--accent)) 14%, white);
+  background: var(--accent-soft);
   color: var(--accent-strong);
   font-weight: 600;
   font-size: 14px;
@@ -183,7 +192,7 @@ main { flex: 1; padding: 40px 0 56px; }
 }
 
 .tpl-poster .ad-title { font-size: 1.55rem; }
-.tpl-poster .ad-links { justify-items: center; }
+.tpl-poster .ad-links { align-items: center; }
 
 .tpl-minimal {
   border: none;
@@ -193,7 +202,7 @@ main { flex: 1; padding: 40px 0 56px; }
   padding-left: 18px;
 }
 
-.tpl-minimal .ad-links a { background: transparent; padding: 0; }
+.tpl-minimal .ad-link-chip { background: transparent; padding: 0; }
 
 #ad-view .ad-shell {
   max-width: 640px;

@@ -12,7 +12,12 @@
     var session;
     try {
       session = await window.PanoAds.requireSession();
-    } catch {
+    } catch (error) {
+      listEl.innerHTML =
+        '<p class="empty error">' +
+        window.PanoTemplates.escapeHtml(error.message) +
+        "</p>";
+      setStatus("");
       return;
     }
 
