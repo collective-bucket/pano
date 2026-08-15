@@ -3,14 +3,14 @@
 
   var PROJECT = window.PanoConfig.projectId;
   var API_KEY = window.PanoConfig.apiKey;
-  var BASE =
+  var ROOT =
     "https://firestore.googleapis.com/v1/projects/" +
     PROJECT +
     "/databases/(default)/documents";
 
-  function withKey(path) {
-    var sep = path.indexOf("?") >= 0 ? "&" : "?";
-    return path + sep + "key=" + encodeURIComponent(API_KEY);
+  function withKey(url) {
+    var sep = url.indexOf("?") >= 0 ? "&" : "?";
+    return url + sep + "key=" + encodeURIComponent(API_KEY);
   }
 
   function encodeValue(value) {
@@ -88,7 +88,8 @@
       headers.Authorization = "Bearer " + options.token;
     }
 
-    var response = await fetch(BASE + withKey(path), {
+    var url = path.indexOf("http") === 0 ? path : ROOT + path;
+    var response = await fetch(withKey(url), {
       method: options.method || "GET",
       headers: headers,
       body: options.body ? JSON.stringify(options.body) : undefined
@@ -116,13 +117,42 @@
     return decodeDocument(doc);
   }
 
-  async function listCollection(collection, token) {
-    var json = await request("/" + collection + "?pageSize=100", {
-      token: token
+  async function runQuery(structuredQuery, token) {
+    var rows = await request(ROOT + ":runQuery", {
+      method: "POST",
+      token: token,
+      body: { structuredQuery: structuredQuery }
     });
-    return (json && json.documents ? json.documents : [])
-      .map(decodeDocument)
+
+    if (!Array.isArray(rows)) return [];
+
+    return rows
+      .map(function (row) {
+        return decodeDocument(row.document);
+      })
       .filter(Boolean);
+  }
+
+  async function queryEquals(collection, field, value, token) {
+    var encoded;
+    if (typeof value === "boolean") encoded = { booleanValue: value };
+    else if (typeof value === "string") encoded = { stringValue: value };
+    else throw new Error("Desteklenmeyen sorgu değeri");
+
+    return runQuery(
+      {
+        from: [{ collectionId: collection }],
+        where: {
+          fieldFilter: {
+            field: { fieldPath: field },
+            op: "EQUAL",
+            value: encoded
+          }
+        },
+        limit: 100
+      },
+      token
+    );
   }
 
   async function createDocument(collection, id, data, token) {
@@ -166,7 +196,7 @@
 
   window.PanoFirestore = {
     getDocument: getDocument,
-    listCollection: listCollection,
+    queryEquals: queryEquals,
     createDocument: createDocument,
     updateDocument: updateDocument,
     deleteDocument: deleteDocument

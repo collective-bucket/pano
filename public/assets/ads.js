@@ -89,25 +89,22 @@
   }
 
   async function listPublished() {
-    var docs = await window.PanoFirestore.listCollection("ads");
-    return docs
-      .filter(function (ad) {
-        return ad.published === true;
-      })
-      .sort(function (a, b) {
-        return String(b.updatedAt || "").localeCompare(String(a.updatedAt || ""));
-      });
+    var docs = await window.PanoFirestore.queryEquals("ads", "published", true);
+    return docs.sort(function (a, b) {
+      return String(b.updatedAt || "").localeCompare(String(a.updatedAt || ""));
+    });
   }
 
   async function listMine(session) {
-    var docs = await window.PanoFirestore.listCollection("ads", session.idToken);
-    return docs
-      .filter(function (ad) {
-        return ad.ownerUid === session.uid;
-      })
-      .sort(function (a, b) {
-        return String(b.updatedAt || "").localeCompare(String(a.updatedAt || ""));
-      });
+    var docs = await window.PanoFirestore.queryEquals(
+      "ads",
+      "ownerUid",
+      session.uid,
+      session.idToken
+    );
+    return docs.sort(function (a, b) {
+      return String(b.updatedAt || "").localeCompare(String(a.updatedAt || ""));
+    });
   }
 
   async function getAd(id, token) {
