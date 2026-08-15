@@ -6,9 +6,10 @@ Collective Bucket altında QR ile paylaşılabilir ilan panosu.
 
 - Herkese açık anasayfa: yayınlanan tüm ilanlar
 - İlan oluşturma / düzenleme için `auth.collectivebucket.com` oturumu
-- Şablonlar: kart, poster, minimal
-- Link ekleme, vurgu rengi, emoji
+- Post-it kartları ve beş renk seçeneği
+- İlan başına birden fazla link
 - İstemci tarafında QR üretimi ve PNG indirme
+- İlanlarım kartlarında görüntüleme, düzenleme, QR indirme ve silme menüsü
 
 ## Adresler
 

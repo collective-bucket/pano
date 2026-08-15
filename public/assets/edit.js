@@ -6,6 +6,7 @@
   var message = document.querySelector("#edit-message");
   var qrCanvas = document.querySelector("#qr-canvas");
   var qrDownload = document.querySelector("#qr-download");
+  var qrPublicUrl = document.querySelector("#qr-public-url");
   var qrPanel = document.querySelector("#qr-panel");
   var linksList = document.querySelector("#links-list");
   var adIdInput = document.querySelector("#ad-id");
@@ -22,9 +23,7 @@
     return {
       title: form.title.value,
       body: form.body.value,
-      emoji: form.emoji.value,
-      template: form.template.value,
-      accent: form.accent.value,
+      noteColor: form.noteColor.value,
       published: form.published.checked,
       links: linkRows.map(function (row) {
         return {
@@ -62,9 +61,7 @@
     preview.innerHTML = window.PanoTemplates.renderAd({
       title: draft.title || "Başlık önizlemesi",
       body: draft.body || "Kısa açıklama burada görünecek.",
-      emoji: draft.emoji,
-      template: draft.template,
-      accent: draft.accent,
+      noteColor: draft.noteColor,
       links: window.PanoAds.normalizeLinks(draft.links)
     });
   }
@@ -79,15 +76,19 @@
     });
     qrDownload.href = qrCanvas.toDataURL("image/png");
     qrDownload.download = "pano-" + id + ".png";
+    qrPublicUrl.href = url;
+    qrPublicUrl.textContent = url;
     qrPanel.hidden = false;
   }
 
   function fillForm(ad) {
     form.title.value = ad.title || "";
     form.body.value = ad.body || "";
-    form.emoji.value = ad.emoji || "";
-    form.template.value = ad.template || "card";
-    form.accent.value = ad.accent || window.PanoAds.DEFAULT_ACCENT;
+    var noteColor = ad.noteColor || window.PanoAds.DEFAULT_NOTE_COLOR;
+    var colorInput = form.querySelector(
+      '[name="noteColor"][value="' + noteColor + '"]'
+    );
+    (colorInput || form.querySelector('[name="noteColor"][value="yellow"]')).checked = true;
     form.published.checked = ad.published !== false;
     linksList.innerHTML = "";
     (ad.links && ad.links.length ? ad.links : [{ label: "", url: "" }]).forEach(
@@ -125,9 +126,7 @@
       fillForm({
         title: "",
         body: "",
-        emoji: "📌",
-        template: "card",
-        accent: window.PanoAds.DEFAULT_ACCENT,
+        noteColor: window.PanoAds.DEFAULT_NOTE_COLOR,
         published: true,
         links: [{ label: "Web sitesi", url: "" }]
       });

@@ -33,23 +33,21 @@
 
       listEl.innerHTML = ads
         .map(function (ad) {
+          var id = window.PanoTemplates.escapeHtml(ad.id);
           return (
             '<article class="mine-item">' +
             window.PanoTemplates.renderAd(ad, { compact: true }) +
-            '<div class="mine-actions">' +
-            '<span class="badge">' +
+            '<span class="badge postit-status">' +
             (ad.published ? "yayında" : "taslak") +
             "</span>" +
-            '<a class="btn btn-ghost" href="/i/' +
-            encodeURIComponent(ad.id) +
-            '">Görüntüle</a>' +
-            '<a class="btn btn-ghost" href="/edit?id=' +
-            encodeURIComponent(ad.id) +
-            '">Düzenle</a>' +
-            '<button type="button" class="btn btn-ghost danger" data-delete="' +
-            window.PanoTemplates.escapeHtml(ad.id) +
-            '">Sil</button>' +
-            "</div></article>"
+            '<details class="postit-menu">' +
+            '<summary aria-label="İlan aksiyonları">•••</summary>' +
+            '<div class="postit-menu-panel">' +
+            '<a href="/i/' + encodeURIComponent(ad.id) + '">Görüntüle</a>' +
+            '<a href="/edit?id=' + encodeURIComponent(ad.id) + '">Düzenle</a>' +
+            '<button type="button" data-qr="' + id + '">QR görselini indir</button>' +
+            '<button type="button" class="danger" data-delete="' + id + '">Sil</button>' +
+            "</div></details></article>"
           );
         })
         .join("");
@@ -63,10 +61,37 @@
     }
   }
 
+  async function downloadQr(id) {
+    if (!window.QRCode) throw new Error("QR aracı yüklenemedi.");
+    var canvas = document.createElement("canvas");
+    await window.QRCode.toCanvas(canvas, window.PanoAds.publicUrl(id), {
+      width: 1200,
+      margin: 2,
+      color: { dark: "#191c1a", light: "#ffffff" }
+    });
+    var link = document.createElement("a");
+    link.href = canvas.toDataURL("image/png");
+    link.download = "pano-" + id + ".png";
+    link.click();
+  }
+
   listEl.addEventListener("click", async function (event) {
-    var button = event.target.closest("[data-delete]");
-    if (!button) return;
-    var id = button.getAttribute("data-delete");
+    var qrButton = event.target.closest("[data-qr]");
+    if (qrButton) {
+      try {
+        qrButton.disabled = true;
+        await downloadQr(qrButton.getAttribute("data-qr"));
+      } catch (error) {
+        window.alert(error.message);
+      } finally {
+        qrButton.disabled = false;
+      }
+      return;
+    }
+
+    var deleteButton = event.target.closest("[data-delete]");
+    if (!deleteButton) return;
+    var id = deleteButton.getAttribute("data-delete");
     if (!window.confirm("Bu ilanı silmek istiyor musun?")) return;
     try {
       var session = await window.PanoAds.requireSession();

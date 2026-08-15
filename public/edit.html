@@ -45,23 +45,31 @@
           <label for="body">Açıklama</label>
           <textarea id="body" name="body" maxlength="2000"></textarea>
 
-          <div class="row-2">
-            <div>
-              <label for="emoji">Emoji</label>
-              <input id="emoji" name="emoji" type="text" maxlength="8" placeholder="📌" />
+          <fieldset class="color-fieldset">
+            <legend>Post-it rengi</legend>
+            <div class="color-options">
+              <label class="color-option color-yellow">
+                <input type="radio" name="noteColor" value="yellow" checked />
+                <span>Sarı</span>
+              </label>
+              <label class="color-option color-mint">
+                <input type="radio" name="noteColor" value="mint" />
+                <span>Mint</span>
+              </label>
+              <label class="color-option color-pink">
+                <input type="radio" name="noteColor" value="pink" />
+                <span>Pembe</span>
+              </label>
+              <label class="color-option color-blue">
+                <input type="radio" name="noteColor" value="blue" />
+                <span>Mavi</span>
+              </label>
+              <label class="color-option color-lilac">
+                <input type="radio" name="noteColor" value="lilac" />
+                <span>Lila</span>
+              </label>
             </div>
-            <div>
-              <label for="accent">Vurgu rengi</label>
-              <input id="accent" name="accent" type="color" value="#2f9a7c" />
-            </div>
-          </div>
-
-          <label for="template">Şablon</label>
-          <select id="template" name="template">
-            <option value="card">Kart</option>
-            <option value="poster">Poster</option>
-            <option value="minimal">Minimal</option>
-          </select>
+          </fieldset>
 
           <label>Linkler</label>
           <div id="links-list"></div>
@@ -85,8 +93,9 @@
           <div id="qr-panel" hidden>
             <h2>QR kod</h2>
             <canvas id="qr-canvas" width="280" height="280"></canvas>
+            <a id="qr-public-url" class="qr-public-url" target="_blank" rel="noopener"></a>
             <div class="actions" style="justify-content:center;">
-              <a id="qr-download" class="btn btn-primary" href="#">QR indir</a>
+              <a id="qr-download" class="btn btn-primary" href="#">QR görselini indir</a>
             </div>
           </div>
         </aside>

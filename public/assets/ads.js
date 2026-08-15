@@ -1,8 +1,8 @@
 (function () {
   "use strict";
 
-  var TEMPLATES = ["card", "poster", "minimal"];
-  var DEFAULT_ACCENT = "#2f9a7c";
+  var NOTE_COLORS = ["yellow", "mint", "pink", "blue", "lilac"];
+  var DEFAULT_NOTE_COLOR = "yellow";
 
   function nowIso() {
     return new Date().toISOString();
@@ -46,19 +46,17 @@
     var title = String(input.title || "").trim().slice(0, 120);
     if (!title) throw new Error("Başlık zorunlu.");
 
-    var template = TEMPLATES.indexOf(input.template) >= 0 ? input.template : "card";
-    var accent = String(input.accent || DEFAULT_ACCENT).trim().slice(0, 16);
-    if (!/^#[0-9a-fA-F]{3,8}$/.test(accent)) accent = DEFAULT_ACCENT;
+    var noteColor =
+      NOTE_COLORS.indexOf(input.noteColor) >= 0
+        ? input.noteColor
+        : DEFAULT_NOTE_COLOR;
 
     var payload = {
       ownerUid: session.uid,
-      ownerEmail: session.email || "",
       title: title,
       body: String(input.body || "").trim().slice(0, 2000),
-      emoji: String(input.emoji || "").trim().slice(0, 8),
       links: normalizeLinks(input.links),
-      template: template,
-      accent: accent,
+      noteColor: noteColor,
       published: input.published !== false,
       updatedAt: nowIso()
     };
@@ -134,7 +132,6 @@
     if (existing) {
       payload.createdAt = existing.createdAt || payload.createdAt;
       payload.ownerUid = existing.ownerUid;
-      payload.ownerEmail = existing.ownerEmail || session.email || "";
       return window.PanoFirestore.updateDocument(
         "ads",
         id,
@@ -171,8 +168,8 @@
   }
 
   window.PanoAds = {
-    TEMPLATES: TEMPLATES,
-    DEFAULT_ACCENT: DEFAULT_ACCENT,
+    NOTE_COLORS: NOTE_COLORS,
+    DEFAULT_NOTE_COLOR: DEFAULT_NOTE_COLOR,
     waitForAuth: waitForAuth,
     requireSession: requireSession,
     listPublished: listPublished,

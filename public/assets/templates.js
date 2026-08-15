@@ -38,22 +38,16 @@
 
   function renderAd(ad, options) {
     options = options || {};
-    var template = ad.template || "card";
-    var accent = ad.accent || "#2f9a7c";
+    var colors = ["yellow", "mint", "pink", "blue", "lilac"];
+    var noteColor =
+      colors.indexOf(ad.noteColor) >= 0 ? ad.noteColor : "yellow";
     var compact = options.compact;
     var href = options.href;
 
     var inner =
-      '<div class="ad-shell tpl-' +
-      escapeHtml(template) +
-      '" style="--ad-accent:' +
-      escapeHtml(accent) +
+      '<div class="ad-shell postit postit-' +
+      noteColor +
       '">' +
-      (ad.emoji
-        ? '<div class="ad-emoji" aria-hidden="true">' +
-          escapeHtml(ad.emoji) +
-          "</div>"
-        : "") +
       "<h" +
       (compact ? "3" : "1") +
       ' class="ad-title">' +
