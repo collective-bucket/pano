@@ -92,7 +92,7 @@
           <div id="preview"></div>
           <div id="qr-panel" hidden>
             <h2>QR kod</h2>
-            <canvas id="qr-canvas" width="280" height="280"></canvas>
+            <img id="qr-image" alt="İlanın QR kodu" />
             <a id="qr-public-url" class="qr-public-url" target="_blank" rel="noopener"></a>
             <div class="actions" style="justify-content:center;">
               <a id="qr-download" class="btn btn-primary" href="#">QR görselini indir</a>
@@ -110,7 +110,7 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js" defer></script>
+  <script type="module" src="/assets/qr.js"></script>
   <script src="https://auth.collectivebucket.com/client.js" defer></script>
   <script src="/assets/config.js" defer></script>
   <script src="/assets/firestore.js" defer></script>

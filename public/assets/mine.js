@@ -36,7 +36,10 @@
           var id = window.PanoTemplates.escapeHtml(ad.id);
           return (
             '<article class="mine-item">' +
-            window.PanoTemplates.renderAd(ad, { compact: true }) +
+            window.PanoTemplates.renderAd(ad, {
+              compact: true,
+              href: "/i/" + encodeURIComponent(ad.id)
+            }) +
             '<span class="badge postit-status">' +
             (ad.published ? "yayında" : "taslak") +
             "</span>" +
@@ -52,6 +55,7 @@
         })
         .join("");
       setStatus(ads.length + " ilan");
+      window.PanoTemplates.hydrateQrCodes(listEl);
     } catch (error) {
       listEl.innerHTML =
         '<p class="empty error">' +
@@ -62,15 +66,12 @@
   }
 
   async function downloadQr(id) {
-    if (!window.QRCode) throw new Error("QR aracı yüklenemedi.");
-    var canvas = document.createElement("canvas");
-    await window.QRCode.toCanvas(canvas, window.PanoAds.publicUrl(id), {
-      width: 1200,
-      margin: 2,
-      color: { dark: "#191c1a", light: "#ffffff" }
-    });
+    var src = await window.PanoTemplates.qrDataUrl(
+      window.PanoAds.publicUrl(id),
+      1200
+    );
     var link = document.createElement("a");
-    link.href = canvas.toDataURL("image/png");
+    link.href = src;
     link.download = "pano-" + id + ".png";
     link.click();
   }

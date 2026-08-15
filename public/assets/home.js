@@ -32,6 +32,7 @@
         })
         .join("");
       setStatus(ads.length + " ilan");
+      window.PanoTemplates.hydrateQrCodes(listEl);
     } catch (error) {
       listEl.innerHTML =
         '<p class="empty error">İlanlar yüklenemedi: ' +

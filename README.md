@@ -8,7 +8,8 @@ Collective Bucket altında QR ile paylaşılabilir ilan panosu.
 - İlan oluşturma / düzenleme için `auth.collectivebucket.com` oturumu
 - Post-it kartları ve beş renk seçeneği
 - İlan başına birden fazla link
-- İstemci tarafında QR üretimi ve PNG indirme
+- Liste kartlarının sol alt köşesinde ilanın QR kodu
+- İstemci tarafında QR üretimi ve PNG indirme (`assets/qr.js`, jsDelivr ESM)
 - İlanlarım kartlarında görüntüleme, düzenleme, QR indirme ve silme menüsü
 
 ## Adresler

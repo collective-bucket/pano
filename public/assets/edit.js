@@ -4,7 +4,7 @@
   var form = document.querySelector("#edit-form");
   var preview = document.querySelector("#preview");
   var message = document.querySelector("#edit-message");
-  var qrCanvas = document.querySelector("#qr-canvas");
+  var qrImage = document.querySelector("#qr-image");
   var qrDownload = document.querySelector("#qr-download");
   var qrPublicUrl = document.querySelector("#qr-public-url");
   var qrPanel = document.querySelector("#qr-panel");
@@ -67,18 +67,15 @@
   }
 
   async function renderQr(id) {
-    if (!window.QRCode) return;
     var url = window.PanoAds.publicUrl(id);
-    await window.QRCode.toCanvas(qrCanvas, url, {
-      width: 280,
-      margin: 2,
-      color: { dark: "#191c1a", light: "#ffffff" }
-    });
-    qrDownload.href = qrCanvas.toDataURL("image/png");
-    qrDownload.download = "pano-" + id + ".png";
     qrPublicUrl.href = url;
     qrPublicUrl.textContent = url;
     qrPanel.hidden = false;
+
+    var src = await window.PanoTemplates.qrDataUrl(url, 1200);
+    qrImage.src = src;
+    qrDownload.href = src;
+    qrDownload.download = "pano-" + id + ".png";
   }
 
   function fillForm(ad) {
@@ -117,8 +114,10 @@
           return;
         }
         fillForm(ad);
-        await renderQr(ad.id);
         showMessage("İlan düzenleniyor.", "success");
+        renderQr(ad.id).catch(function (error) {
+          showMessage(error.message, "error");
+        });
       } catch (error) {
         showMessage(error.message, "error");
       }
@@ -149,6 +148,7 @@
       editingId = saved.id;
       adIdInput.value = saved.id;
       history.replaceState({}, "", "/edit?id=" + encodeURIComponent(saved.id));
+      showMessage("Kaydedildi. QR kodu hazırlanıyor…", "success");
       await renderQr(saved.id);
       showMessage("Kaydedildi. QR kodu hazır.", "success");
     } catch (error) {
