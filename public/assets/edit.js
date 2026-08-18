@@ -11,12 +11,20 @@
   var linksList = document.querySelector("#links-list");
   var adIdInput = document.querySelector("#ad-id");
   var deleteButton = document.querySelector("#delete-ad");
+  var loginPrompt = document.querySelector("#login-prompt");
+  var loginLink = document.querySelector("#login-link");
+  var editor = document.querySelector("#editor");
+  var confirmDialog = document.querySelector("#confirm-dialog");
   var editingId = null;
   var session = null;
 
   function showMessage(text, type) {
     message.textContent = text || "";
     message.className = "message" + (type ? " message-" + type : "");
+  }
+
+  function closeDialog(dialog) {
+    if (dialog && dialog.open) dialog.close();
   }
 
   function readForm() {
@@ -96,12 +104,16 @@
   }
 
   async function boot() {
-    try {
-      session = await window.PanoAds.requireSession();
-    } catch (error) {
-      showMessage(error.message, "error");
+    loginLink.href = window.PanoAds.loginUrl();
+    session = await window.PanoAds.getOptionalSession();
+    if (!session || !session.idToken) {
+      loginPrompt.hidden = false;
+      editor.hidden = true;
       return;
     }
+
+    loginPrompt.hidden = true;
+    editor.hidden = false;
 
     var params = new URLSearchParams(window.location.search);
     editingId = params.get("id");
@@ -159,9 +171,23 @@
     }
   });
 
-  deleteButton.addEventListener("click", async function () {
+  deleteButton.addEventListener("click", function () {
     if (!editingId) return;
-    if (!window.confirm("Bu ilanı kaldırmak istiyor musun?")) return;
+    confirmDialog.showModal();
+  });
+
+  confirmDialog.addEventListener("click", function (event) {
+    if (event.target === confirmDialog) closeDialog(confirmDialog);
+  });
+  confirmDialog.querySelectorAll("[data-close-dialog]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      closeDialog(confirmDialog);
+    });
+  });
+
+  document.querySelector("#confirm-delete").addEventListener("click", async function () {
+    if (!editingId) return;
+    closeDialog(confirmDialog);
     showMessage("İlan kaldırılıyor…");
     try {
       session = await window.PanoAds.requireSession();

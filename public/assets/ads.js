@@ -82,21 +82,31 @@
     return window.CollectiveBucketAuth;
   }
 
+  async function getOptionalSession() {
+    try {
+      var client = await waitForAuth();
+      var current = client.getCurrentSession && client.getCurrentSession();
+      if (current && current.idToken) return current;
+      return await client.getSession({ forceRefresh: false });
+    } catch {
+      return null;
+    }
+  }
+
   async function requireSession() {
-    var client = await waitForAuth();
-    var session = await client.getSession({
-      forceRefresh: true
-    });
+    var session = await getOptionalSession();
     if (!session || !session.idToken) {
-      var returnTo = window.location.href;
-      window.location.assign(
-        window.PanoConfig.authOrigin +
-          "/?returnTo=" +
-          encodeURIComponent(returnTo)
-      );
-      throw new Error("Giriş gerekli.");
+      throw new Error("Kaydetmek için giriş yap.");
     }
     return session;
+  }
+
+  function loginUrl() {
+    return (
+      window.PanoConfig.authOrigin +
+      "/?returnTo=" +
+      encodeURIComponent(window.location.href)
+    );
   }
 
   async function listPublished() {
@@ -171,7 +181,9 @@
     NOTE_COLORS: NOTE_COLORS,
     DEFAULT_NOTE_COLOR: DEFAULT_NOTE_COLOR,
     waitForAuth: waitForAuth,
+    getOptionalSession: getOptionalSession,
     requireSession: requireSession,
+    loginUrl: loginUrl,
     listPublished: listPublished,
     listMine: listMine,
     getAd: getAd,

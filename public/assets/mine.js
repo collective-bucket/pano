@@ -3,24 +3,24 @@
 
   var listEl = document.querySelector("#mine-list");
   var statusEl = document.querySelector("#mine-status");
+  var loginPrompt = document.querySelector("#login-prompt");
+  var loginLink = document.querySelector("#login-link");
 
   function setStatus(text) {
     statusEl.textContent = text || "";
   }
 
   async function load() {
-    var session;
-    try {
-      session = await window.PanoAds.requireSession();
-    } catch (error) {
-      listEl.innerHTML =
-        '<p class="empty error">' +
-        window.PanoTemplates.escapeHtml(error.message) +
-        "</p>";
+    loginLink.href = window.PanoAds.loginUrl();
+    var session = await window.PanoAds.getOptionalSession();
+    if (!session || !session.idToken) {
+      loginPrompt.hidden = false;
+      listEl.innerHTML = "";
       setStatus("");
       return;
     }
 
+    loginPrompt.hidden = true;
     setStatus("Yükleniyor…");
     try {
       var ads = await window.PanoAds.listMine(session);

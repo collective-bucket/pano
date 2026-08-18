@@ -10,21 +10,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/assets/styles.css" />
+  <link rel="stylesheet" href="https://collectivebucket.com/assets/shell.css" />
 </head>
 <body>
-  <header class="nav">
-    <div class="wrap">
-      <a class="brand" href="/">
-        <img src="/assets/logo.svg" alt="" />
-        <span>Pano</span>
-      </a>
-      <button class="nav-toggle" type="button" aria-label="Menüyü aç" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-      <div class="nav-cta">
-        <a class="btn btn-ghost" href="/mine">İlanlarım</a>
-        <div class="cb-auth-controls" data-cb-auth></div>
-      </div>
+  <header data-cb-shell="header">
+    <div data-cb-shell-cta>
+      <a class="btn btn-ghost" href="/mine">İlanlarım</a>
     </div>
   </header>
 
@@ -37,61 +28,68 @@
         </div>
       </section>
 
-      <div class="edit-layout">
-        <form id="edit-form" class="panel">
-          <h2>İçerik</h2>
-          <input id="ad-id" type="hidden" />
+      <div id="login-prompt" class="login-action" hidden>
+        <a id="login-link" class="btn btn-primary" href="#">Giriş yap</a>
+      </div>
 
-          <label for="title">Başlık</label>
-          <input id="title" name="title" type="text" maxlength="120" required />
-
-          <label for="body">Açıklama</label>
-          <textarea id="body" name="body" maxlength="2000"></textarea>
-
-          <fieldset class="color-fieldset">
-            <legend>Post-it rengi</legend>
-            <div class="color-options">
-              <label class="color-option color-yellow">
-                <input type="radio" name="noteColor" value="yellow" checked />
-                <span>Sarı</span>
-              </label>
-              <label class="color-option color-mint">
-                <input type="radio" name="noteColor" value="mint" />
-                <span>Mint</span>
-              </label>
-              <label class="color-option color-pink">
-                <input type="radio" name="noteColor" value="pink" />
-                <span>Pembe</span>
-              </label>
-              <label class="color-option color-blue">
-                <input type="radio" name="noteColor" value="blue" />
-                <span>Mavi</span>
-              </label>
-              <label class="color-option color-lilac">
-                <input type="radio" name="noteColor" value="lilac" />
-                <span>Lila</span>
-              </label>
+      <div id="editor" class="edit-layout" hidden>
+        <dialog id="edit-dialog" class="modal edit-modal" open>
+          <form id="edit-form" class="modal-form">
+            <div class="modal-header">
+              <h2>İçerik</h2>
             </div>
-          </fieldset>
+            <div class="modal-content">
+              <input id="ad-id" type="hidden" />
 
-          <label>Linkler</label>
-          <div id="links-list"></div>
-          <button id="add-link" class="btn btn-ghost" type="button">Link ekle</button>
+              <label for="title">Başlık</label>
+              <input id="title" name="title" type="text" maxlength="120" required />
 
-          <label class="check">
-            <input id="published" name="published" type="checkbox" checked />
-            Yayında göster
-          </label>
+              <label for="body">Açıklama</label>
+              <textarea id="body" name="body" maxlength="2000"></textarea>
 
-          <div class="actions">
-            <button class="btn btn-primary" type="submit">Kaydet</button>
-            <button id="delete-ad" class="btn btn-ghost danger" type="button" hidden>
-              İlanı kaldır
-            </button>
-            <a class="btn btn-ghost" href="/mine">İlanlarım</a>
-          </div>
-          <p id="edit-message" class="message" role="status"></p>
-        </form>
+              <fieldset class="color-fieldset">
+                <legend>Post-it rengi</legend>
+                <div class="color-options">
+                  <label class="color-option color-yellow">
+                    <input type="radio" name="noteColor" value="yellow" checked />
+                    <span>Sarı</span>
+                  </label>
+                  <label class="color-option color-mint">
+                    <input type="radio" name="noteColor" value="mint" />
+                    <span>Mint</span>
+                  </label>
+                  <label class="color-option color-pink">
+                    <input type="radio" name="noteColor" value="pink" />
+                    <span>Pembe</span>
+                  </label>
+                  <label class="color-option color-blue">
+                    <input type="radio" name="noteColor" value="blue" />
+                    <span>Mavi</span>
+                  </label>
+                  <label class="color-option color-lilac">
+                    <input type="radio" name="noteColor" value="lilac" />
+                    <span>Lila</span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <label>Linkler</label>
+              <div id="links-list"></div>
+              <button id="add-link" class="btn btn-ghost" type="button">Link ekle</button>
+
+              <label class="check">
+                <input id="published" name="published" type="checkbox" checked />
+                Yayında göster
+              </label>
+              <p id="edit-message" class="message" role="status"></p>
+            </div>
+            <div class="modal-actions">
+              <button id="delete-ad" class="btn btn-ghost danger" type="button" hidden>Sil</button>
+              <a class="btn btn-ghost" href="/mine">Vazgeç</a>
+              <button class="btn btn-primary" type="submit">Kaydet</button>
+            </div>
+          </form>
+        </dialog>
 
         <div class="preview-column">
           <aside class="panel">
@@ -111,14 +109,28 @@
     </div>
   </main>
 
-  <footer>
-    <div class="wrap">
-      <span>Collective Bucket · Pano</span>
-      <a href="https://auth.collectivebucket.com">Giriş</a>
+  <dialog id="confirm-dialog" class="modal">
+    <div class="modal-body">
+      <div class="modal-header">
+        <h2>Silinsin mi?</h2>
+        <button class="btn btn-ghost btn-icon" type="button" data-close-dialog aria-label="Kapat" title="Kapat">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <div class="modal-content">
+        <p class="modal-text">Bu ilan kalıcı olarak kaldırılacak.</p>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" type="button" data-close-dialog>Vazgeç</button>
+        <button id="confirm-delete" class="btn btn-danger-fill" type="button">Sil</button>
+      </div>
     </div>
-  </footer>
+  </dialog>
+
+  <footer data-cb-shell="footer"></footer>
 
   <script type="module" src="/assets/qr.js"></script>
+  <script src="https://collectivebucket.com/assets/shell.js" defer></script>
   <script src="https://auth.collectivebucket.com/client.js" defer></script>
   <script src="/assets/config.js" defer></script>
   <script src="/assets/firestore.js" defer></script>
