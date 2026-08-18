@@ -27,4 +27,5 @@ jobs:
           token_format: access_token
       - run: npm ci
       - run: npm run check
+      - run: npm run stamp
       - run: npx firebase-tools deploy --only hosting:pano,firestore:rules --token "${{ steps.auth.outputs.access_token }}" --non-interactive
