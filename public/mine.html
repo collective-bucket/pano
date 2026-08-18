@@ -13,11 +13,11 @@
   <link rel="stylesheet" href="https://collectivebucket.com/assets/shell.css" />
 </head>
 <body>
-  <header data-cb-shell="header">
-    <div data-cb-shell-cta>
-      <a class="btn btn-primary" href="/edit">Yeni ilan</a>
-    </div>
-  </header>
+  <header
+    data-cb-shell="header"
+    data-cb-shell-app="Pano"
+    data-cb-shell-home="/"
+  ></header>
 
   <main>
     <div class="wrap">
@@ -26,7 +26,13 @@
           <h1>İlanlarım</h1>
           <p>Oluşturduğun ilanlara tıklayarak düzenle.</p>
         </div>
-        <div class="meta" id="mine-status"></div>
+        <div class="hero-toolbar">
+          <div class="meta" id="mine-status"></div>
+          <div class="hero-actions">
+            <a class="btn btn-ghost" href="/">Tüm ilanlar</a>
+            <a class="btn btn-primary" href="/edit">Yeni ilan</a>
+          </div>
+        </div>
       </section>
       <div id="login-prompt" class="login-action" hidden>
         <a id="login-link" class="btn btn-primary" href="#">Giriş yap</a>
