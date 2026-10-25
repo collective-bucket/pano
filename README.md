@@ -29,3 +29,6 @@ npm run serve
 
 Firestore `ads` koleksiyonu. Okuma yayınlananlar için herkese açık; yazma yalnızca
 ilan sahibi (`ownerUid`).
+
+Kurallar [collective-bucket/firestore](https://github.com/collective-bucket/firestore)
+reposunda tutulur ve yalnızca oradan deploy edilir; bu repo yalnızca hosting deploy eder.
